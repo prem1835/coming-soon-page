@@ -29,17 +29,20 @@
                         <h1 class="heading-text--1">
                             We're
                             <span class="heading-text--2">
-                    coming soon
-                    </span>
+                                coming soon
+                                <button id="share">share now</button>
+                            </span>
                         </h1>
                     </div>
                     <div class="para-text-box">
                         <p class="para-text">
-                            Hello fellow shoppers! We're currently building our new fashion store. Add your email below to stay up-to-date with announcements and our launch deals.
+                            Hello fellow shoppers! We're currently building our new fashion store. Add your email below
+                            to stay up-to-date with announcements and our launch deals.
                         </p>
                     </div>
                     <div class="email-form-box">
-                        <input type="email" class="email-form" name="email" aria-label="email" placeholder="Email Address">
+                        <input type="email" class="email-form" name="email" aria-label="email"
+                            placeholder="Email Address">
                         <input type="image" src="images/icon-arrow.svg" class="btn" alt="error-image">
                     </div>
                 </div>
@@ -49,9 +52,49 @@
                 <img src="images/hero-desktop.jpg" alt="Company's model photo" class="full-image">
             </div>
         </main>
+        <script>
+            // our share button in the markup
+            const shareButton = document.getElementById('share');
+
+            // create share data object
+            const shareData = {
+                title: 'Web Share API',
+                text: 'The best way to share your data.',
+                url: '' // reffers to the current page
+            };
+
+
+            // click event handler is necessary to call navigator.share()
+            shareButton.addEventListener('click', async () => {
+
+                const image = await fetch(
+                    'https://www.imgacademy.com/themes/custom/imgacademy/images/helpbox-contact.jpg');
+                const blob = await image.blob();
+                const file = new File([blob], 'image.jpg', {
+                    type: 'image/jpeg'
+                });
+                const filesArray = [file];
+
+                // add it to the shareData
+                shareData.files = filesArray;
+
+                if (navigator.share) {
+                    try {
+                        await navigator.share(shareData);
+                        console.log('🥳 Shared via API.');
+                    } catch (error) {
+                        console.log(`😢 ${error}`);
+                    }
+                } else {
+                    // you could do a fallback solution here ... 
+                    console.log('😢 Your browser does not support the web share api.')
+                }
+            })
+        </script>
         <footer>
             <p class="attribution">
-                Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a> Coded by <a href="#">prem</a>
+                Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>
+                Coded by <a href="#">prem</a>
             </p>
         </footer>
     </div>
